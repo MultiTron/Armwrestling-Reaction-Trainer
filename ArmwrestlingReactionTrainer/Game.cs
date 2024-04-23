@@ -1,9 +1,11 @@
-﻿using System.Timers;
+﻿using System.Media;
+using System.Timers;
 
 namespace ArmwrestlingReactionTrainer
 {
     public partial class Game : Form
     {
+        public SoundPlayer Sound { get; set; }
         public GameSettings GameSettings { get; set; }
         public System.Timers.Timer RoundTimer { get; set; }
         public int timeLeft { get; set; }
@@ -48,6 +50,11 @@ namespace ArmwrestlingReactionTrainer
             Thread.Sleep(1500);
             this.BackColor = SystemColors.Control;
         }
+        public void PlayAudio(object src, ElapsedEventArgs args)
+        {
+            Sound.SoundLocation = $@"..\..\..\sounds\ready_go_{Random.Shared.Next(1, 7)}.wav";
+            Sound.Play();
+        }
 
         private void Quit(object sender, EventArgs e)
         {
@@ -57,9 +64,15 @@ namespace ArmwrestlingReactionTrainer
 
         private void Game_Load(object sender, EventArgs e)
         {
+
             var interval = Random.Shared.Next(GameSettings.MinInterval, GameSettings.MaxInterval);
             RoundTimer = new System.Timers.Timer(interval);
             RoundTimer.Elapsed += new ElapsedEventHandler(ChangeInterval);
+            if (GameSettings.IsAudible)
+            {
+                Sound = new SoundPlayer();
+                RoundTimer.Elapsed += new ElapsedEventHandler(PlayAudio);
+            }
             RoundTimer.Elapsed += new ElapsedEventHandler(ChangeScreen);
 
             timeLeft = GameSettings.Duration;

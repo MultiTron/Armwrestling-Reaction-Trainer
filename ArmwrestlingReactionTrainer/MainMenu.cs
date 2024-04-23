@@ -34,5 +34,10 @@ namespace ArmwrestlingReactionTrainer
         {
             new Settings().ShowDialog(this);
         }
+
+        private void OpenInstructions(object sender, EventArgs e)
+        {
+            new Instructions().ShowDialog(this);
+        }
     }
 }

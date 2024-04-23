@@ -44,6 +44,7 @@
             btnInstructions.TabIndex = 0;
             btnInstructions.Text = "Instructions";
             btnInstructions.UseVisualStyleBackColor = true;
+            btnInstructions.Click += OpenInstructions;
             // 
             // btnSettings
             // 
